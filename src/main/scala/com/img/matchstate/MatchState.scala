@@ -1,7 +1,7 @@
 package com.img.matchstate
 
 import com.img.parser.SportEvent
-import com.img.validation.SportEventValidator
+import com.img.validation.{EventValidator, SportEventValidator}
 
 import scala.collection.mutable
 import scala.util.Try
@@ -10,7 +10,14 @@ import scala.util.Try
 /**
  * Created by pradeep on 21/02/2016.
  */
-class MatchState {
+
+
+object MatchStateImplicits {
+   implicit val sportEventValidator = SportEventValidator
+}
+
+class MatchState( implicit  val sportEventValidator: EventValidator){
+
 
   /**
    * Priority queue maintaining the state of valid events
@@ -50,10 +57,10 @@ class MatchState {
   def addEvent(event: SportEvent): Boolean = {
     if (state.headOption.isEmpty && event.valid) {
       state.enqueue(event)
-      return true
-    } else if (!state.headOption.isEmpty && SportEventValidator.validate(event, state.head)) {
+       true
+    } else if (!state.headOption.isEmpty && sportEventValidator.validate(event, state.head)) {
       state.enqueue(event)
-      return true
+       true
     } else {
       failedEvents.+=(event)
       false

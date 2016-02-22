@@ -1,12 +1,14 @@
 import com.img.matchstate.MatchState
 import com.img.parser.SportsDataParser
 import com.img.streaming.SportDataFileStream
+import com.img.validation.SportEventValidator
 
 /**
  * Created by pradeep on 21/02/2016.
  */
 object Application extends App{
 
+     import com.img.matchstate.MatchStateImplicits._
 
      val sportMatch = new MatchState()
      handleSportEvent("/sample1.txt", sportMatch)

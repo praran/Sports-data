@@ -9,9 +9,9 @@ import org.scalatest.FunSpec
  */
 class MatchStateTest extends FunSpec {
 
+  import com.img.matchstate.MatchStateImplicits._
 
   describe("Match state") {
-
 
 
     it("is initialized") {

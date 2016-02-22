@@ -6,7 +6,9 @@ import com.img.parser.SportEvent
  * Created by pradeep on 21/02/2016.
  */
 
-
+/**
+  * Trait representing the validation rule
+  */
 trait ValidationRule {
   def validate(newEvent: SportEvent, lastEvent: SportEvent): Boolean
 }
@@ -51,23 +53,41 @@ object DataInconsistencyRule2 extends ValidationRule {
   }
 }
 
+/**
+  * trait representing the EventValidator
+  */
+trait EventValidator{
+
+   def validate(newEvent: SportEvent, lastEvent: SportEvent):Boolean
+}
+
+/**
+  * Class representing the SportEvent validator
+  * @param validationRules
+  */
+class SportEventValidator(validationRules : List[ValidationRule]) extends EventValidator{
+
+  def validate(newEvent: SportEvent, lastEvent: SportEvent) = {
+    validationRules.map(rule => rule.validate(newEvent, lastEvent)).reduce(_ && _)
+  }
+
+  def getRules = validationRules
+}
 
 /**
  * Validator for sports events
  */
-object SportEventValidator {
+object SportEventValidator  extends EventValidator{
+  val validationRules = List(DataFormatValidationRule, DataInconsistencyRule1, DataInconsistencyRule2)
 
-  /**
-   * List of rules for validating sports events
-   */
-  private val validationRules = List(DataFormatValidationRule
-    , DataInconsistencyRule1
-    , DataInconsistencyRule2)
+  def apply(): Unit = {
+     new SportEventValidator(validationRules)
+  }
 
   /**
    * Returns list of validation rules
    * @return
-   */
+    **/
   def getRules = validationRules
 
   /**
@@ -75,10 +95,9 @@ object SportEventValidator {
    * @param newEvent
    * @param lastEvent
    * @return
-   */
+    */
   def validate(newEvent: SportEvent, lastEvent: SportEvent) = {
     validationRules.map(rule => rule.validate(newEvent, lastEvent)).reduce(_ && _)
   }
-
 
 }
