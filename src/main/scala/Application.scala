@@ -1,6 +1,6 @@
 import com.img.matchstate.MatchState
 import com.img.parser.SportsDataParser
-import com.img.streaming.SportDataFileStream
+import com.img.input.SportDataFileIn
 import com.img.validation.SportEventValidator
 
 /**
@@ -32,7 +32,8 @@ object Application extends App{
 
      private def handleSportEvent(fileName:String, matchState:MatchState): Unit ={
           val path = getClass.getResource(fileName).getPath
-          val streamer = new SportDataFileStream(path)
+          val streamer = new SportDataFileIn(path)
           streamer.getData.map(SportsDataParser.parse).foreach(matchState.addEvent)
      }
+
 }

@@ -22,14 +22,15 @@ class MatchStateTest extends FunSpec {
     it("adds valid sport events to its state") {
       val matchState = new MatchState()
       val sportEvent = SportEvent("f1243", true, 0, 0, 0, 0, 0)
-      assert(matchState.addEvent(sportEvent) == true)
+      matchState.addEvent(sportEvent)
+      assert(matchState.getLastEvent.get == sportEvent)
     }
 
 
     it("does not add invalid sport events to its state"){
       val matchState = new MatchState()
       val sportEvent = SportEvent("f1243", false, 0, 0, 0, 0, 0)
-      assert(matchState.addEvent(sportEvent) == false)
+      matchState.addFailedEvents(sportEvent)
       assert(matchState.getFailedEvents.size == 1)
     }
 

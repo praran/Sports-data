@@ -54,8 +54,8 @@ class MatchState( implicit  val sportEventValidator: EventValidator){
    * @param event
    * @return
    */
-  def addEvent(event: SportEvent): Boolean = {
-    if (state.headOption.isEmpty && event.valid) {
+  def addEvent(event: SportEvent) = {
+/*    if (state.headOption.isEmpty && event.valid) {
       state.enqueue(event)
        true
     } else if (!state.headOption.isEmpty && sportEventValidator.validate(event, state.head)) {
@@ -64,9 +64,13 @@ class MatchState( implicit  val sportEventValidator: EventValidator){
     } else {
       failedEvents.+=(event)
       false
-    }
+    }*/
+    state.enqueue(event)
 
   }
+
+
+  def addFailedEvents(event: SportEvent) = failedEvents += event
 
   /**
    * gets the list of failed events
